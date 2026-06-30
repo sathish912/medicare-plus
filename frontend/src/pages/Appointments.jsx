@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { X } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { getMyAppointments, updateAppointmentStatus, createPrescription, createReview, generateInvoice, requestLabTest } from "../api/endpoints";
-import { Star, FlaskConical } from "lucide-react";
+import { Star, FlaskConical, CheckCircle2 } from "lucide-react";
 
 const statusColors = {
   pending: "bg-amber-100 text-amber-700",
@@ -36,6 +36,8 @@ export default function Appointments() {
 
   useEffect(() => {
     load();
+    const interval = setInterval(load, 4000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleStatusChange = async (id, status) => {
@@ -170,6 +172,9 @@ export default function Appointments() {
                   <button onClick={() => openPrescriptionModal(a)} className="btn-primary text-sm">
                     Add Prescription & Complete
                   </button>
+                  <button onClick={() => handleStatusChange(a.id, "completed")} className="btn-secondary bg-emerald-600 hover:bg-emerald-700 text-white border-none text-sm font-semibold">
+                    Mark Completed
+                  </button>
                 </>
               )}
               {user.role === "doctor" && a.status === "completed" && (
@@ -190,9 +195,14 @@ export default function Appointments() {
                 </>
               )}
               {user.role === "patient" && a.status === "completed" && (
-                <button onClick={() => setReviewModal(a)} className="btn-secondary text-sm flex items-center gap-1">
-                  <Star className="w-3 h-3"/> Leave Review
-                </button>
+                <>
+                  <div className="px-3 py-1.5 bg-emerald-100 text-emerald-800 rounded-xl text-sm font-bold flex items-center gap-1.5 border border-emerald-300 shadow-sm">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Consultation Completed
+                  </div>
+                  <button onClick={() => setReviewModal(a)} className="btn-secondary text-sm flex items-center gap-1">
+                    <Star className="w-3 h-3"/> Leave Review
+                  </button>
+                </>
               )}
             </div>
           </div>

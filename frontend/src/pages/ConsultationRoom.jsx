@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { PhoneOff, Save, FilePlus, ShieldAlert, MessageSquare } from "lucide-react";
-import { getAppointment, updateAppointmentNotes, getPatientEmergencyContacts } from "../api/endpoints";
+import { getAppointment, updateAppointmentNotes, updateAppointmentStatus, getPatientEmergencyContacts } from "../api/endpoints";
 import { useAuth } from "../context/AuthContext";
 import ChatBox from "../components/ChatBox";
 import VideoCall from "../components/VideoCall";
@@ -49,8 +49,22 @@ export default function ConsultationRoom() {
 
   const handleEndSession = async () => {
     await handleSaveNotes();
-    toast.success("Consultation ended. You can now issue a prescription.");
+    toast.success("Saved draft notes.");
     navigate("/appointments");
+  };
+
+  const handleCompleteConsultation = async () => {
+    setSaving(true);
+    try {
+      await handleSaveNotes();
+      await updateAppointmentStatus(id, { status: "completed" });
+      toast.success("Consultation completed successfully!");
+      navigate("/appointments");
+    } catch (err) {
+      toast.error("Failed to complete consultation");
+    } finally {
+      setSaving(false);
+    }
   };
 
   if (!appointment) return <div className="p-10 text-center text-slate-500">Loading consultation room...</div>;
@@ -130,20 +144,27 @@ export default function ConsultationRoom() {
         )}
 
         {user?.role === "doctor" && (
-          <div className="p-5 border-t border-slate-100 space-y-3 bg-slate-50">
+          <div className="p-5 border-t border-slate-100 space-y-2.5 bg-slate-50">
             <button 
               onClick={handleSaveNotes} 
               disabled={saving}
-              className="btn-secondary w-full flex justify-center items-center gap-2"
+              className="btn-secondary w-full flex justify-center items-center gap-2 text-sm py-2"
             >
               <Save className="w-4 h-4" />
-              {saving ? "Saving..." : "Save Draft"}
+              {saving ? "Saving..." : "Save Draft Notes"}
             </button>
             <button 
               onClick={handleEndSession} 
-              className="btn-primary w-full"
+              className="btn-secondary w-full border-primary-500 text-primary-600 hover:bg-primary-50 text-sm py-2 font-semibold"
             >
-              End Session & Prescribe
+              Leave Session & Issue Prescription
+            </button>
+            <button 
+              onClick={handleCompleteConsultation} 
+              disabled={saving}
+              className="btn-primary w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm py-2.5 font-bold flex justify-center items-center gap-2 shadow-sm"
+            >
+              End & Mark Completed
             </button>
           </div>
         )}
