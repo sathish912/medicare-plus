@@ -32,10 +32,12 @@ export default function Assistant() {
       await new Promise((resolve) => setTimeout(resolve, 800)); // Simulate typing delay
       const res = await sendChatMessage(userText);
       setMessages((prev) => [...prev, res.data]);
-    } catch {
+    } catch (err) {
+      console.error("AI Assistant error:", err);
+      const errorMsg = err.response?.data?.detail || "Sorry, something went wrong connecting to the backend. Please ensure your backend server is restarted and running.";
       setMessages((prev) => [
         ...prev,
-        { id: `err-${Date.now()}`, sender: "ai", message: "Sorry, something went wrong. Please try again.", created_at: new Date().toISOString() },
+        { id: `err-${Date.now()}`, sender: "ai", message: errorMsg, created_at: new Date().toISOString() },
       ]);
     } finally {
       setSending(false);

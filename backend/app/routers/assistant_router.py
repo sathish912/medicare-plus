@@ -98,13 +98,17 @@ def chat(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(auth.get_current_user),
 ):
+    models.Base.metadata.create_all(bind=db.get_bind())
     user_msg = models.ChatMessage(
         user_id=current_user.id, sender="user", message=payload.message
     )
     db.add(user_msg)
     db.commit()
 
-    reply_text = generate_ai_reply(payload.message, db, current_user)
+    try:
+        reply_text = generate_ai_reply(payload.message, db, current_user)
+    except Exception as e:
+        reply_text = DEFAULT_RESPONSE
 
     ai_msg = models.ChatMessage(
         user_id=current_user.id, sender="ai", message=reply_text
@@ -121,6 +125,7 @@ def history(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(auth.get_current_user),
 ):
+    models.Base.metadata.create_all(bind=db.get_bind())
     return (
         db.query(models.ChatMessage)
         .filter(models.ChatMessage.user_id == current_user.id)
