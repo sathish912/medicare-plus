@@ -463,7 +463,7 @@ class AuditLogOut(BaseModel):
         from_attributes = True
 
 # ---------- Chat Messaging ----------
-class ChatMessageOut(BaseModel):
+class ConsultationRoomMessageOut(BaseModel):
     id: int
     appointment_id: int
     sender_id: int
