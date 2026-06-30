@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import toast from "react-hot-toast";
 import { 
   DollarSign, 
+  IndianRupee,
   TrendingUp, 
   Clock, 
   CheckCircle2, 
@@ -213,11 +214,11 @@ export default function Revenue() {
               <div className="flex items-center justify-between">
                 <span className="text-primary-100 text-sm font-medium">Total Gross Revenue</span>
                 <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center backdrop-blur-sm">
-                  <DollarSign className="w-5 h-5 text-white" />
+                  <IndianRupee className="w-5 h-5 text-white" />
                 </div>
               </div>
               <h3 className="text-3xl font-black mt-4">
-                ${stats.totalRevenue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                ₹{stats.totalRevenue.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </h3>
             </div>
             <div className="mt-4 pt-3 border-t border-white/15 flex items-center justify-between text-xs text-primary-100">
@@ -238,7 +239,7 @@ export default function Revenue() {
                 </div>
               </div>
               <h3 className="text-3xl font-extrabold text-slate-900 mt-4">
-                ${stats.collectedRevenue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                ₹{stats.collectedRevenue.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </h3>
             </div>
             <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
@@ -259,7 +260,7 @@ export default function Revenue() {
                 </div>
               </div>
               <h3 className="text-3xl font-extrabold text-slate-900 mt-4">
-                ${stats.pendingRevenue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                ₹{stats.pendingRevenue.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </h3>
             </div>
             <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
@@ -280,7 +281,7 @@ export default function Revenue() {
                 </div>
               </div>
               <h3 className="text-3xl font-extrabold text-slate-900 mt-4">
-                ${stats.avgBill.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                ₹{stats.avgBill.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </h3>
             </div>
             <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
@@ -419,7 +420,7 @@ export default function Revenue() {
 
                         <td className="py-4 px-6">
                           <span className="font-extrabold text-slate-900 text-base">
-                            ${parseFloat(inv.amount).toFixed(2)}
+                            ₹{parseFloat(inv.amount).toFixed(2)}
                           </span>
                         </td>
 
@@ -517,10 +518,10 @@ export default function Revenue() {
 
               <div>
                 <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">
-                  Bill Amount ($)
+                  Bill Amount (₹)
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3.5 top-2.5 text-slate-400 font-bold">$</span>
+                  <span className="absolute left-3.5 top-2.5 text-slate-400 font-bold">₹</span>
                   <input
                     type="number"
                     step="0.01"

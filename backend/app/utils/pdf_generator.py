@@ -151,7 +151,7 @@ def generate_invoice_pdf(invoice, appointment, patient) -> bytes:
     
     c.setFont("Helvetica", 10)
     c.drawString(50, y_position, "Doctor Consultation Fee")
-    c.drawString(450, y_position, f"${invoice.amount:.2f}")
+    c.drawString(450, y_position, f"Rs. {invoice.amount:.2f}")
     
     y_position -= 30
     c.setStrokeColor(colors.black)
@@ -160,7 +160,7 @@ def generate_invoice_pdf(invoice, appointment, patient) -> bytes:
     y_position -= 20
     c.setFont("Helvetica-Bold", 12)
     c.drawString(350, y_position, "Total Due:")
-    c.drawString(450, y_position, f"${invoice.amount:.2f}")
+    c.drawString(450, y_position, f"Rs. {invoice.amount:.2f}")
     
     y_position -= 30
     c.setFont("Helvetica", 10)
