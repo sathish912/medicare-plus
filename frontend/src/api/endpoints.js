@@ -71,6 +71,7 @@ export const getDoctorReviews = (doctorId) => api.get(`/api/reviews/doctor/${doc
 export const generateInvoice = (data) => api.post("/api/billing/", data);
 export const generateDirectBill = (data) => api.post("/api/billing/direct", data);
 export const getMyInvoices = () => api.get("/api/billing/my-invoices");
+export const getAllInvoices = () => api.get("/api/billing/");
 export const payInvoice = (invoiceId) => api.put(`/api/billing/${invoiceId}/pay`);
 
 // ---------- Admin ----------

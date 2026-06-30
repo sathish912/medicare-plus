@@ -32,6 +32,7 @@ import EmergencyPatient from "./pages/EmergencyPatient";
 import EmergencyAdmin from "./pages/EmergencyAdmin";
 import SubmitFeedback from "./pages/SubmitFeedback";
 import FeedbackAnalytics from "./pages/FeedbackAnalytics";
+import Revenue from "./pages/Revenue";
 
 export default function App() {
   return (
@@ -249,6 +250,14 @@ export default function App() {
             element={
               <ProtectedRoute allowedRoles={["patient", "doctor", "admin"]}>
                 <LabTests />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/revenue"
+            element={
+              <ProtectedRoute allowedRoles={["admin", "doctor"]}>
+                <Revenue />
               </ProtectedRoute>
             }
           />

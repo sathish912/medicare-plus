@@ -61,6 +61,7 @@ export default function Navbar() {
               { to: "/bed-management", label: "Bed Management" },
               { to: "/admissions", label: "Admissions" },
               { to: "/admin/emergencies", label: "Emergencies" },
+              { to: "/revenue", label: "Revenue" },
             ]
           : []),
         ...(user.role === "admin" 
@@ -71,13 +72,14 @@ export default function Navbar() {
               { to: "/admissions", label: "Admissions" },
               { to: "/admin/emergencies", label: "Emergencies" },
               { to: "/admin/feedback", label: "Feedback Stats" },
+              { to: "/revenue", label: "Revenue" },
             ] 
           : []),
       ]
     : [];
 
   const location = useLocation();
-  const topLinkLabels = ["Dashboard", "Appointments", "Medical Records", "Lab Tests", "Emergency", "Give Feedback", "Emergencies", "Feedback Stats"];
+  const topLinkLabels = ["Dashboard", "Appointments", "Medical Records", "Lab Tests", "Emergency", "Give Feedback", "Emergencies", "Feedback Stats", "Revenue"];
   const topLinks = navLinks.filter(link => topLinkLabels.includes(link.label));
   const bottomLinks = navLinks.filter(link => !topLinkLabels.includes(link.label));
 

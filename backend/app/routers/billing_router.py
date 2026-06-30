@@ -27,7 +27,7 @@ def create_direct_invoice(
     if current_user.role not in [UserRole.admin, UserRole.doctor]:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough privileges")
     
-    doc_id = current_user.id if current_user.role == UserRole.doctor else 1
+    doc_id = current_user.id
     
     appt = Appointment(
         patient_id=bill_in.patient_id,
@@ -88,7 +88,7 @@ def get_my_invoices(
     if current_user.role != UserRole.patient:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only patients can view their bills here")
         
-    invoices = db.query(Invoice).filter(Invoice.patient_id == current_user.id).all()
+    invoices = db.query(Invoice).filter(Invoice.patient_id == current_user.id).order_by(Invoice.id.desc()).all()
     return invoices
 
 @router.get("/", response_model=List[InvoiceOut])
@@ -96,10 +96,10 @@ def get_all_invoices(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    if current_user.role != UserRole.admin:
+    if current_user.role not in [UserRole.admin, UserRole.doctor]:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough privileges")
         
-    invoices = db.query(Invoice).all()
+    invoices = db.query(Invoice).order_by(Invoice.id.desc()).all()
     return invoices
 
 @router.put("/{invoice_id}/pay", response_model=InvoiceOut)
@@ -113,7 +113,7 @@ def pay_invoice(
     if not invoice:
         raise HTTPException(status_code=404, detail="Invoice not found")
         
-    if invoice.patient_id != current_user.id and current_user.role != UserRole.admin:
+    if invoice.patient_id != current_user.id and current_user.role not in [UserRole.admin, UserRole.doctor]:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough privileges")
         
     if invoice.status == "paid":
@@ -141,7 +141,7 @@ def download_invoice(
     if not invoice:
         raise HTTPException(status_code=404, detail="Invoice not found")
         
-    if invoice.patient_id != current_user.id and current_user.role != UserRole.admin:
+    if invoice.patient_id != current_user.id and current_user.role not in [UserRole.admin, UserRole.doctor]:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough privileges")
         
     pdf_bytes = generate_invoice_pdf(

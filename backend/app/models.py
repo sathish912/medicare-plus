@@ -207,6 +207,22 @@ class Invoice(Base):
     appointment = relationship("Appointment")
     patient = relationship("User", foreign_keys=[patient_id])
 
+    @property
+    def patient_name(self):
+        return self.patient.full_name if self.patient else f"Patient #{self.patient_id}"
+
+    @property
+    def doctor_name(self):
+        if self.appointment and self.appointment.doctor:
+            return self.appointment.doctor.full_name
+        return "Hospital Administration"
+
+    @property
+    def reason(self):
+        if self.appointment and self.appointment.reason:
+            return self.appointment.reason
+        return "Hospital Care & Medical Bill"
+
 
 class DoctorReview(Base):
     __tablename__ = "doctor_reviews"

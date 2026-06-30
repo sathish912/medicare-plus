@@ -298,7 +298,10 @@ class InvoiceOut(BaseModel):
     amount: float
     status: str
     transaction_id: Optional[str] = None
-    created_at: datetime
+    created_at: Optional[datetime] = None
+    patient_name: Optional[str] = None
+    doctor_name: Optional[str] = None
+    reason: Optional[str] = None
 
     class Config:
         from_attributes = True
